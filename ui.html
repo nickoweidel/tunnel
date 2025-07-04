@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Tunnel Generator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 16px;
+      box-sizing: border-box;
+      height: 600px;
+      overflow: hidden;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+    }
+    input {
+      width: 100%;
+      padding: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background: #333;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #000;
+    }
+  </style>
+</head>
+<body>
+  <form id="form">
+    <label>Ширина макета: <input id="width" type="number" /></label>
+    <label>Высота макета: <input id="height" type="number" /></label>
+    <label>Ширина окна: <input id="innerWidth" type="number" /></label>
+    <label>Высота окна: <input id="innerHeight" type="number" /></label>
+    <label>Количество лучей по вертикали (стены): <input id="verticalRays" type="number" /></label>
+    <label>Количество лучей по горизонтали (пол/потолок): <input id="horizontalRays" type="number" /></label>
+    <button type="submit">Сгенерировать</button>
+  </form>
+
+  <script>
+    onmessage = (event) => {
+      const data = event.data.pluginMessage;
+      document.getElementById("width").value = data.width || "";
+      document.getElementById("height").value = data.height || "";
+      document.getElementById("innerWidth").value = data.innerWidth || "";
+      document.getElementById("innerHeight").value = data.innerHeight || "";
+      document.getElementById("verticalRays").value = data.verticalRays || "";
+      document.getElementById("horizontalRays").value = data.horizontalRays || "";
+    };
+
+    document.getElementById("form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      parent.postMessage(
+        {
+          pluginMessage: {
+            width: document.getElementById("width").value,
+            height: document.getElementById("height").value,
+            innerWidth: document.getElementById("innerWidth").value,
+            innerHeight: document.getElementById("innerHeight").value,
+            verticalRays: document.getElementById("verticalRays").value,
+            horizontalRays: document.getElementById("horizontalRays").value
+          }
+        },
+        "*"
+      );
+    });
+  </script>
+</body>
+</html>
